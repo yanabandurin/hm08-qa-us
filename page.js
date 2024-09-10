@@ -8,20 +8,20 @@ module.exports = {
     cardCode: '.card-second-row #code',
     // Buttons
     callATaxiButton: 'button=Call a taxi',
-    phoneNumberButton: '//div[@class="np-button"]',
+    phoneNumberButton: '//div[text()="Phone number"]',
     nextButton: 'button=Next',
     confirmButton: 'button=Confirm',
     supportivePlanSelected: '//div[starts-with(text(), "Supportive")]',
     supportiveIcon:  '//div[@class="tcard active"]//button[@data-for="tariff-card-4"]',
-    cardButton: '//div[@class="pp-button filled"]',
-    addCardButton: '//div[starts-with(text(), "Add card")]',
+    cardButton: '//div[@class="pp-text"]',
+    addCardButton: '//div[text()="Add card"]',
     linkcardButton: 'button=Link',
     addedCard: '//div[starts-with(text(), "Card")]',
 
 
     // Modals
     phoneNumberModal: '.modal',
-    paymentMetodModal: '.payment-picker open',
+    paymentMetodModal: '.overlay',
     // Functions
     fillAddresses: async function(from, to) {
         const fromField = await $(this.fromField);

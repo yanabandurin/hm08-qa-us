@@ -23,6 +23,11 @@ describe('Create an order', () => {
     it('should save the phone', async () => {
         await browser.url(`/`)
         await page.fillAddresses('East 2nd Street, 601', '1300 1st St');
+        await page.callTaxiButton();
+        const supportivePlanSelected = await $(page.supportivePlanSelected);
+        await supportivePlanSelected.waitForDisplayed();
+        await supportivePlanSelected.click();
+        await expect($(page.supportiveIcon)).toBeExisting();
         const phoneNumber = helper.getPhoneNumber("+1");
         await page.submitPhoneNumber(phoneNumber);
         await expect(await helper.getElementByText(phoneNumber)).toBeExisting();
@@ -30,6 +35,11 @@ describe('Create an order', () => {
     it('Add credit card', async() => {
         await browser.url(`/`)
         await page.fillAddresses('East 2nd Street, 601', '1300 1st St');
+        await page.callTaxiButton();
+        const supportivePlanSelected = await $(page.supportivePlanSelected);
+        await supportivePlanSelected.waitForDisplayed();
+        await supportivePlanSelected.click();
+        await expect($(page.supportiveIcon)).toBeExisting();
         const phoneNumber = helper.getPhoneNumber("+1");
         await page.submitPhoneNumber(phoneNumber);
         const creditCardNumber = helper.getcardNumber();
