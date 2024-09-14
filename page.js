@@ -6,6 +6,7 @@ module.exports = {
     codeField: '#code',
     cardNumber: '#number',
     cardCode: '.card-second-row #code',
+    messegeForDriver: '#comment',
     // Buttons
     callATaxiButton: 'button=Call a taxi',
     phoneNumberButton: '//div[text()="Phone number"]',
@@ -17,11 +18,17 @@ module.exports = {
     addCardButton: '//div[text()="Add card"]',
     linkcardButton: 'button=Link',
     addedCard: '//div[starts-with(text(), "Card")]',
-
+    orderRequairments: '/html/body/div/div/div[3]/div[3]/div[2]/div[2]/div[4]/div[2]/div[1]/div/div[2]/div',
+    blanketSwitch: '/html/body/div/div/div[3]/div[3]/div[2]/div[2]/div[4]/div[2]/div[1]/div/div[2]/div/input',
+    iceCreamPlusButton: '//div[@class="counter-plus"]',
+    iceCreamValue: '//div[@class="counter-value"]',
+    confirmRideButton: '//button[@class="smart-button"]',
 
     // Modals
     phoneNumberModal: '.modal',
-    paymentMetodModal: '.overlay',
+    paymentMetodModal: '.payment-picker.open',
+    closeModalButton: '/html/body/div/div/div[2]/div[2]/div[1]/button',
+
     // Functions
     fillAddresses: async function(from, to) {
         const fromField = await $(this.fromField);
@@ -46,16 +53,11 @@ module.exports = {
     },
     submitPhoneNumber: async function(phoneNumber) {
         await this.fillPhoneNumber(phoneNumber);
-        // we are starting interception of request from the moment of method call
         await browser.setupInterceptor();
         await $(this.nextButton).click();
-        // we should wait for response
-        // eslint-disable-next-line wdio/no-pause
         await browser.pause(2000);
         const codeField = await $(this.codeField);
-        // collect all responses
         const requests = await browser.getRequests();
-        // use first response
         await expect(requests.length).toBe(1)
         const code = await requests[0].response.body.code
         await codeField.setValue(code)
@@ -78,5 +80,32 @@ module.exports = {
         await cardCode.setValue(creditCardCode);
         const linkcardButton = await $(this.linkcardButton);
         await linkcardButton.click();
+        await browser.pause(1000);  
+        const closeModalButton = await $(this.closeModalButton);
+        await closeModalButton.waitForDisplayed();
+        await closeModalButton.click();
+    },
+    driverMessegeField: async function(messege) {
+        const messegeForDriver = await $(this.messegeForDriver);
+        await messegeForDriver.waitForDisplayed();
+        await messegeForDriver.setValue(messege);
+    },
+    clickBlanketSwitch: async function () {
+    const orderRequairments = await $(this.orderRequairments);
+    await orderRequairments.waitForDisplayed();
+    await orderRequairments.click();
+    },
+    orderIceCream: async function () {
+        const iceCreamPlusButton = await $(this.iceCreamPlusButton);
+        await iceCreamPlusButton.waitForDisplayed();
+        await iceCreamPlusButton.click();
+        await iceCreamPlusButton.click();
+    },
+    confirmRide: async function () {
+        const confirmRideButton = await $(this.confirmRideButton);
+        await confirmRideButton.waitForDisplayed();
+        await confirmRideButton.click();
+    
     }
+
 };
